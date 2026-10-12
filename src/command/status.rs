@@ -212,10 +212,10 @@ fn render_json(
 ) -> Result<(), ForgeError> {
     let items: Vec<_> = entries.iter().map(entry_to_json).collect();
     let mut data = serde_json::json!({ "clusters": items });
-    if let (Some(nd), Some(obj)) = (net, data.as_object_mut()) {
+    if let (Some(network), Some(obj)) = (net, data.as_object_mut()) {
         obj.insert(
             "network".to_owned(),
-            serde_json::json!({ "name": nd.name, "phase": nd.phase }),
+            serde_json::json!({ "name": network.name, "phase": network.phase }),
         );
     }
     if let (false, Some(obj)) = (services.is_empty(), data.as_object_mut()) {
@@ -258,8 +258,8 @@ fn render_text(
     net: Option<&NetInfo>,
     services: &[SvcEntry],
 ) -> Result<(), ForgeError> {
-    if let Some(nd) = net {
-        output::write_text(writer, &format!("  network: {} ({})", nd.name, nd.phase))?;
+    if let Some(network) = net {
+        output::write_text(writer, &format!("  network: {} ({})", network.name, network.phase))?;
     }
     for entry in entries {
         output::write_text(writer, &format_entry_text(entry))?;

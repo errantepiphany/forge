@@ -638,7 +638,7 @@ enum BindAddr {
 
 /// Classify an optional bind address for conflict detection.
 ///
-/// Unparseable addresses are treated as wildcard; per-port validation
+/// Unparsable addresses are treated as wildcard; per-port validation
 /// has already rejected them with a dedicated error by this point.
 fn parse_bind_addr(addr: Option<&str>) -> BindAddr {
     match addr.and_then(|val| val.parse::<std::net::IpAddr>().ok()) {

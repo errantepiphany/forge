@@ -547,10 +547,10 @@ fn render_json(
 ) -> Result<(), ForgeError> {
     let items: Vec<_> = clusters.iter().map(result_to_json).collect();
     let mut data = serde_json::json!({ "clusters": items });
-    if let (Some(nd), Some(obj)) = (net, data.as_object_mut()) {
+    if let (Some(network), Some(obj)) = (net, data.as_object_mut()) {
         obj.insert(
             "network".to_owned(),
-            serde_json::json!({ "name": nd.name, "dryRun": nd.dry_run }),
+            serde_json::json!({ "name": network.name, "dryRun": network.dry_run }),
         );
     }
     if let (false, Some(obj)) = (services.is_empty(), data.as_object_mut()) {
@@ -588,8 +588,8 @@ fn render_text(
     clusters: &[ClusterResult],
     services: &[ServiceResult],
 ) -> Result<(), ForgeError> {
-    if let Some(nd) = net {
-        output::write_text(writer, &format_net_text(nd))?;
+    if let Some(network) = net {
+        output::write_text(writer, &format_net_text(network))?;
     }
     for result in clusters {
         output::write_text(writer, &format_result_text(result))?;

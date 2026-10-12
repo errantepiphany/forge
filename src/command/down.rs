@@ -385,10 +385,10 @@ fn render_json(
         let svc_items: Vec<_> = services.iter().map(svc_result_to_json).collect();
         obj.insert("services".to_owned(), serde_json::json!(svc_items));
     }
-    if let (Some(nd), Some(obj)) = (net, data.as_object_mut()) {
+    if let (Some(network), Some(obj)) = (net, data.as_object_mut()) {
         obj.insert(
             "network".to_owned(),
-            serde_json::json!({ "name": nd.name, "dryRun": nd.dry_run, "removed": !nd.dry_run && matches!(nd.action, NetworkAction::Remove) }),
+            serde_json::json!({ "name": network.name, "dryRun": network.dry_run, "removed": !network.dry_run && matches!(network.action, NetworkAction::Remove) }),
         );
     }
     let envelope = output::success(data);
